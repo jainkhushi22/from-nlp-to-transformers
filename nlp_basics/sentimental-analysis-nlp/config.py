@@ -1,0 +1,7 @@
+MODEL_PATH="models/sentiment_model.pkl"
+
+VECTOR_SIZE=300
+
+TEST_SIZE=0.2
+
+RANDOM_STATE=42
