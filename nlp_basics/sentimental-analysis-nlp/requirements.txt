@@ -1,7 +1,7 @@
-streamlit
-pandas
-numpy
-scikit-learn
-gensim
-nltk
-beautifulsoup4
+streamlit==1.32.0
+pandas==2.2.1
+numpy==1.26.4
+scikit-learn==1.4.1
+nltk==3.8.1
+beautifulsoup4==4.12.3
+lxml==5.1.0
