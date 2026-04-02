@@ -1,7 +1,9 @@
 streamlit
 pandas
 numpy
-scikit-learn
+scikit-learn>=1.5.0
 gensim
 nltk
 beautifulsoup4
+lxml
+scipy

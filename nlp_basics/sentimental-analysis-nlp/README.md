@@ -1,4 +1,8 @@
 # Amazon Review Sentiment Analysis using NLP
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![NLP](https://img.shields.io/badge/NLP-Sentiment%20Analysis-green)
+![ML](https://img.shields.io/badge/Machine%20Learning-Scikit--Learn-orange)
+![Deployment](https://img.shields.io/badge/Deployment-Streamlit-red)
 
 ## Project Overview
 
@@ -37,6 +41,7 @@ TF-IDF performed best because it preserves word importance, while Word2Vec captu
 ---
 
 ## Project Structure
+```
 sentiment-analysis-nlp/
 
 app.py # Streamlit application
@@ -55,7 +60,7 @@ artifacts/
 model_results.csv # Model comparison results
 
 models/ # Saved models (ignored)
-
+```
 ---
 ## Dataset
 
