@@ -7,7 +7,9 @@ import streamlit as st
 import tensorflow as tf
 
 # load the train model , scalar pickle, onehot pickle
-model=load_model('model.h5')
+import os
+model_path = os.path.join(os.path.dirname(__file__), "model.h5")
+model = load_model(model_path)
 
 #load the encoders and scalar
 with open('LabelEncoder_gender.pkl','rb') as file:
