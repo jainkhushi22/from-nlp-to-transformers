@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Load model
 model_path = os.path.join(BASE_DIR, "model.h5")
-model = load_model(model_path)
+model = load_model(model_path, compile=False)
 
 # Load encoders and scaler
 with open(os.path.join(BASE_DIR, 'LabelEncoder_gender.pkl'), 'rb') as file:
