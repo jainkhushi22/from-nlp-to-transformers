@@ -1,31 +1,32 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
+import numpy as np
 import pickle
-from tensorflow.keras.models import load_model
-import streamlit as st
-import tensorflow as tf
-
-# load the train model , scalar pickle, onehot pickle
 import os
-model_path = os.path.join(os.path.dirname(__file__), "model.h5")
+import streamlit as st
+from tensorflow.keras.models import load_model
+
+# Setup base path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load model
+model_path = os.path.join(BASE_DIR, "model.h5")
 model = load_model(model_path)
 
-#load the encoders and scalar
-with open('LabelEncoder_gender.pkl','rb') as file:
-    lb=pickle.load(file)
+# Load encoders and scaler
+with open(os.path.join(BASE_DIR, 'LabelEncoder_gender.pkl'), 'rb') as file:
+    lb = pickle.load(file)
 
-
-with open('OneHotEncoder_geo.pkl','rb') as file:
+with open(os.path.join(BASE_DIR, 'OneHotEncoder_geo.pkl'), 'rb') as file:
     oh = pickle.load(file)
 
-with open('scalar.pkl','rb') as file:
-    scalar= pickle.load(file)
+with open(os.path.join(BASE_DIR, 'scalar.pkl'), 'rb') as file:
+    scaler = pickle.load(file)
 
-## streamlit app
+# =========================
+# Streamlit UI
+# =========================
 st.title("Customer Churn Prediction")
 
-# User input
 geography = st.selectbox('Geography', oh.categories_[0])
 gender = st.selectbox('Gender', lb.classes_)
 age = st.slider('Age', 18, 92)
@@ -37,7 +38,9 @@ num_of_products = st.slider('Number of Products', 1, 4)
 has_cr_card = st.selectbox('Has Credit Card', [0, 1])
 is_active_member = st.selectbox('Is Active Member', [0, 1])
 
-# Prepare the input data
+# =========================
+# Prepare input data
+# =========================
 input_data = pd.DataFrame({
     'CreditScore': [credit_score],
     'Gender': [lb.transform([gender])[0]],
@@ -48,22 +51,25 @@ input_data = pd.DataFrame({
     'HasCrCard': [has_cr_card],
     'IsActiveMember': [is_active_member],
     'EstimatedSalary': [estimated_salary]
-
 })
 
 geo_encoded = oh.transform([[geography]]).toarray()
-geo_encoded_df=pd.DataFrame(geo_encoded,columns=oh.get_feature_names_out(['Geography']))
+geo_encoded_df = pd.DataFrame(
+    geo_encoded,
+    columns=oh.get_feature_names_out(['Geography'])
+)
 
 input_data = pd.concat([input_data.reset_index(drop=True), geo_encoded_df], axis=1)
 
-# Scale the input data
-input_scale = scalar.transform(input_data)
+# =========================
+# Scale + Predict
+# =========================
+input_scaled = scaler.transform(input_data)
 
-#prediction
-prediction=model.predict(input_scale)
+prediction = model.predict(input_scaled, verbose=0)
 prediction_proba = prediction[0][0]
 
-
+# Output
 st.write(f'Churn Probability: {prediction_proba:.2f}')
 
 if prediction_proba > 0.5:
